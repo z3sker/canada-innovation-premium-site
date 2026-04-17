@@ -346,22 +346,22 @@ function EcosystemOverviewVisual() {
   return (
     <VisualShell eyebrow="ecosystem flow" title="Как канадская экосистема проводит стартап от науки к рынку">
       <div className="rounded-[26px] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.07),rgba(255,255,255,0.02))] p-4">
-        <div className="grid gap-3 lg:grid-cols-5">
+        <div className="relative grid gap-3">
+          <div className="absolute bottom-6 left-[18px] top-6 w-px bg-gradient-to-b from-white/0 via-white/16 to-white/0" />
           {stages.map((stage, idx) => (
-            <div key={stage.step} className="relative">
+            <div key={stage.step} className="relative grid grid-cols-[36px_minmax(0,1fr)] items-start gap-3">
+              <div className="relative z-10 flex h-9 w-9 items-center justify-center rounded-full border border-white/12 bg-black/45 font-mono text-[10px] uppercase tracking-[0.2em] text-white/56 backdrop-blur-xl">
+                {stage.step}
+              </div>
               <motion.div
                 className="rounded-[24px] border border-white/10 bg-black/28 p-4 backdrop-blur-xl"
-                initial={{ y: 12, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
+                initial={{ x: 10, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
                 transition={{ delay: idx * 0.08, duration: 0.35 }}
               >
-                <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-white/42">{stage.step}</div>
-                <div className="mt-3 text-lg font-semibold text-white">{stage.title}</div>
+                <div className="text-lg font-semibold text-white">{stage.title}</div>
                 <div className="mt-2 text-sm leading-6 text-white/64">{stage.text}</div>
               </motion.div>
-              {idx < stages.length - 1 && (
-                <div className="pointer-events-none absolute -right-2 top-1/2 hidden h-px w-4 -translate-y-1/2 bg-gradient-to-r from-white/0 via-white/28 to-white/0 lg:block" />
-              )}
             </div>
           ))}
         </div>
@@ -384,10 +384,10 @@ function EcosystemOverviewVisual() {
 
 function VentureCapitalVisual() {
   const bars = [
-    { label: 'Seed', value: 28, color: 'from-cyan-300 to-sky-400', note: 'ранние чеки' },
-    { label: 'Series A', value: 46, color: 'from-emerald-300 to-teal-400', note: 'первые фонды роста' },
-    { label: 'Series B', value: 68, color: 'from-lime-300 to-emerald-400', note: 'масштабирование' },
-    { label: 'Growth', value: 88, color: 'from-white to-lime-200', note: 'поздняя стадия' },
+    { label: 'Seed', value: 28, color: '#30c7ff', note: 'ранние чеки', x: 18 },
+    { label: 'Series A', value: 46, color: '#2ed8bf', note: 'первые фонды роста', x: 39 },
+    { label: 'Series B', value: 68, color: '#9ef74b', note: 'масштабирование', x: 60 },
+    { label: 'Growth', value: 88, color: '#f1ffbb', note: 'поздняя стадия', x: 81 },
   ];
   const levels = ['100', '75', '50', '25', '0'];
 
@@ -395,40 +395,53 @@ function VentureCapitalVisual() {
     <VisualShell eyebrow="capital depth" title="Глубина финансирования растёт по мере взросления стартапа">
       <div className="grid gap-4">
         <div className="rounded-[26px] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.07),rgba(255,255,255,0.02))] p-4">
-          <div className="grid gap-4 rounded-[22px] border border-white/8 bg-[radial-gradient(circle_at_top,rgba(163,230,53,0.16),transparent_38%),linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.01))] p-4 lg:grid-cols-[42px_minmax(0,1fr)]">
-            <div className="hidden lg:flex lg:h-64 lg:flex-col lg:justify-between">
-              {levels.map((level) => (
-                <div key={level} className="font-mono text-[10px] uppercase tracking-[0.18em] text-white/36">
-                  {level}
-                </div>
-              ))}
-            </div>
+          <div className="rounded-[22px] border border-white/8 bg-[radial-gradient(circle_at_top,rgba(163,230,53,0.16),transparent_38%),linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.01))] p-4">
+            <svg viewBox="0 0 100 100" className="h-72 w-full overflow-visible">
+              {levels.map((level, idx) => {
+                const y = 10 + idx * 20;
+                return (
+                  <g key={level}>
+                    <text x="2" y={y + 1.5} fill="rgba(255,255,255,0.36)" fontSize="3.2" fontFamily="JetBrains Mono, monospace">
+                      {level}
+                    </text>
+                    <line x1="14" y1={y} x2="98" y2={y} stroke="rgba(255,255,255,0.09)" strokeWidth="0.4" />
+                  </g>
+                );
+              })}
 
-            <div className="relative h-64">
-              <div className="absolute inset-0 flex flex-col justify-between">
-                {levels.map((level) => (
-                  <div key={level} className="border-t border-white/8" />
-                ))}
-              </div>
-
-              <div className="absolute inset-0 flex items-end justify-between gap-4 px-1 pt-6">
-                {bars.map((bar, idx) => (
-                  <div key={bar.label} className="flex h-full flex-1 flex-col justify-end">
-                    <div className="mb-3 text-center">
-                      <div className="text-sm font-semibold text-white">{bar.value}</div>
-                      <div className="text-[11px] text-white/46">{bar.note}</div>
-                    </div>
-                    <motion.div
-                      className={`w-full rounded-t-[22px] bg-gradient-to-t ${bar.color} shadow-[0_20px_60px_rgba(163,230,53,0.18)]`}
-                      style={{ height: `${bar.value}%` }}
-                      initial={{ height: 0, opacity: 0.45 }}
-                      animate={{ height: `${bar.value}%`, opacity: 1 }}
+              {bars.map((bar, idx) => {
+                const height = bar.value * 0.8;
+                const y = 90 - height;
+                return (
+                  <g key={bar.label}>
+                    <motion.rect
+                      x={bar.x}
+                      y={y}
+                      width="14"
+                      height={height}
+                      rx="4"
+                      fill={bar.color}
+                      initial={{ height: 0, y: 90, opacity: 0.45 }}
+                      animate={{ height, y, opacity: 1 }}
                       transition={{ delay: idx * 0.08, duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
                     />
-                    <div className="mt-3 text-center font-mono text-[10px] uppercase tracking-[0.18em] text-white/50">{bar.label}</div>
-                  </div>
-                ))}
-              </div>
+                    <text x={bar.x + 7} y={y - 4} textAnchor="middle" fill="white" fontSize="4.5" fontWeight="700">
+                      {bar.value}
+                    </text>
+                    <text x={bar.x + 7} y="97" textAnchor="middle" fill="rgba(255,255,255,0.5)" fontSize="2.6" fontFamily="JetBrains Mono, monospace">
+                      {bar.label.toUpperCase()}
+                    </text>
+                  </g>
+                );
+              })}
+            </svg>
+
+            <div className="mt-2 grid gap-2 sm:grid-cols-2">
+              {bars.map((bar) => (
+                <div key={bar.label} className="rounded-[16px] border border-white/10 bg-black/24 px-3 py-2 text-sm text-white/62">
+                  <span className="font-semibold text-white">{bar.label}:</span> {bar.note}
+                </div>
+              ))}
             </div>
           </div>
         </div>
