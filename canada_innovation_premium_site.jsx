@@ -315,8 +315,269 @@ function InfoCard({ eyebrow, heading, text }) {
   );
 }
 
+function VisualShell({ eyebrow, title, children, className = '' }) {
+  return (
+    <div className={`rounded-[30px] border border-white/12 bg-black/25 p-5 backdrop-blur-2xl ${className}`}>
+      <div className="font-mono text-[10px] uppercase tracking-[0.24em] text-white/42">{eyebrow}</div>
+      <div className="mt-3 text-lg font-semibold tracking-tight text-white">{title}</div>
+      <div className="mt-5">{children}</div>
+    </div>
+  );
+}
+
+function MetricTag({ label, value }) {
+  return (
+    <div className="rounded-[22px] border border-white/10 bg-white/[0.05] px-4 py-3">
+      <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-white/40">{label}</div>
+      <div className="mt-2 text-lg font-semibold text-white">{value}</div>
+    </div>
+  );
+}
+
+function EcosystemOverviewVisual() {
+  const points = [
+    { x: 10, y: 72, label: 'ideas' },
+    { x: 28, y: 60, label: 'labs' },
+    { x: 46, y: 52, label: 'angels' },
+    { x: 64, y: 34, label: 'vc' },
+    { x: 82, y: 20, label: 'global' },
+  ];
+
+  return (
+    <VisualShell eyebrow="ecosystem pulse" title="Рост от исследований к глобальному масштабированию">
+      <div className="rounded-[26px] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.07),rgba(255,255,255,0.02))] p-4">
+        <div className="relative h-56 overflow-hidden rounded-[22px] border border-white/8 bg-[radial-gradient(circle_at_top,rgba(129,140,248,0.2),transparent_45%),linear-gradient(180deg,rgba(255,255,255,0.05),rgba(255,255,255,0.01))]">
+          <div className="absolute inset-0 opacity-[0.08] [background-image:linear-gradient(to_right,white_1px,transparent_1px),linear-gradient(to_bottom,white_1px,transparent_1px)] [background-size:36px_36px]" />
+          <svg viewBox="0 0 100 100" className="absolute inset-0 h-full w-full">
+            <defs>
+              <linearGradient id="ecosystem-line" x1="0%" y1="100%" x2="100%" y2="0%">
+                <stop offset="0%" stopColor="rgba(103,232,249,0.65)" />
+                <stop offset="55%" stopColor="rgba(244,114,182,0.9)" />
+                <stop offset="100%" stopColor="rgba(255,255,255,0.95)" />
+              </linearGradient>
+            </defs>
+            <motion.path
+              d="M 10 72 C 18 67, 22 64, 28 60 S 40 54, 46 52 S 58 41, 64 34 S 76 24, 82 20"
+              fill="none"
+              stroke="url(#ecosystem-line)"
+              strokeWidth="2.4"
+              strokeLinecap="round"
+              initial={{ pathLength: 0, opacity: 0.4 }}
+              animate={{ pathLength: 1, opacity: 1 }}
+              transition={{ duration: 1.1, ease: 'easeOut' }}
+            />
+            <motion.path
+              d="M 10 72 C 18 67, 22 64, 28 60 S 40 54, 46 52 S 58 41, 64 34 S 76 24, 82 20 L 82 86 L 10 86 Z"
+              fill="url(#ecosystem-line)"
+              opacity="0.12"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 0.12 }}
+              transition={{ duration: 0.8 }}
+            />
+            {points.map((point, idx) => (
+              <g key={point.label}>
+                <motion.circle
+                  cx={point.x}
+                  cy={point.y}
+                  r="2.6"
+                  fill="white"
+                  initial={{ scale: 0.6, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ delay: 0.18 * idx, duration: 0.35 }}
+                />
+                <circle cx={point.x} cy={point.y} r="5.5" fill="white" opacity="0.12" />
+              </g>
+            ))}
+          </svg>
+          <div className="absolute inset-x-4 bottom-4 flex justify-between gap-2">
+            {points.map((point) => (
+              <div key={point.label} className="rounded-full border border-white/10 bg-black/30 px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.18em] text-white/58">
+                {point.label}
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <div className="mt-4 grid gap-3 sm:grid-cols-3">
+        <MetricTag label="talent base" value="университеты + R&D" />
+        <MetricTag label="capital stack" value="ангелы → VC → grants" />
+        <MetricTag label="market reach" value="кластеры + export" />
+      </div>
+    </VisualShell>
+  );
+}
+
+function VentureCapitalVisual() {
+  const bars = [
+    { label: 'Seed', value: 38, color: 'from-cyan-300/90 to-sky-400/80' },
+    { label: 'A', value: 58, color: 'from-emerald-300/90 to-teal-400/80' },
+    { label: 'B', value: 72, color: 'from-lime-300/90 to-emerald-400/80' },
+    { label: 'Growth', value: 92, color: 'from-white/95 to-lime-200/90' },
+  ];
+
+  return (
+    <VisualShell eyebrow="capital structure" title="Капитал становится глубже по мере взросления компании">
+      <div className="grid gap-4">
+        <div className="rounded-[26px] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.07),rgba(255,255,255,0.02))] p-4">
+          <div className="flex h-56 items-end gap-3 rounded-[22px] border border-white/8 bg-[radial-gradient(circle_at_top,rgba(163,230,53,0.16),transparent_38%),linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.01))] px-3 pb-3 pt-10">
+            {bars.map((bar, idx) => (
+              <div key={bar.label} className="flex flex-1 flex-col items-center justify-end gap-3">
+                <motion.div
+                  className={`w-full rounded-t-[20px] bg-gradient-to-t ${bar.color} shadow-[0_18px_50px_rgba(163,230,53,0.18)]`}
+                  style={{ height: `${bar.value}%` }}
+                  initial={{ height: 0, opacity: 0.4 }}
+                  animate={{ height: `${bar.value}%`, opacity: 1 }}
+                  transition={{ delay: idx * 0.08, duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+                />
+                <div className="font-mono text-[10px] uppercase tracking-[0.18em] text-white/50">{bar.label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="grid gap-3 sm:grid-cols-3">
+          <MetricTag label="anchor" value="BDC Capital" />
+          <MetricTag label="growth funds" value="Inovia / late-stage" />
+          <MetricTag label="2025 pace" value="$7.95B+" />
+        </div>
+      </div>
+    </VisualShell>
+  );
+}
+
+function ClusterNetworkVisual() {
+  const nodes = [
+    { x: 50, y: 20, label: 'Montréal' },
+    { x: 24, y: 42, label: 'Vancouver' },
+    { x: 76, y: 42, label: 'Ontario' },
+    { x: 33, y: 73, label: 'Prairies' },
+    { x: 67, y: 73, label: 'Atlantic' },
+  ];
+
+  return (
+    <VisualShell eyebrow="cluster map" title="Кластеры работают как единая экспортная сеть">
+      <div className="rounded-[26px] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.07),rgba(255,255,255,0.02))] p-4">
+        <div className="relative h-64 overflow-hidden rounded-[22px] border border-white/8 bg-[radial-gradient(circle_at_center,rgba(99,102,241,0.16),transparent_40%),linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.01))]">
+          <div className="absolute inset-0 opacity-[0.08] [background-image:linear-gradient(to_right,white_1px,transparent_1px),linear-gradient(to_bottom,white_1px,transparent_1px)] [background-size:40px_40px]" />
+          <svg viewBox="0 0 100 100" className="absolute inset-0 h-full w-full">
+            {nodes.map((node) => (
+              <g key={node.label}>
+                <line x1="50" y1="50" x2={node.x} y2={node.y} stroke="rgba(255,255,255,0.18)" strokeWidth="1.2" strokeDasharray="3 3" />
+                <circle cx={node.x} cy={node.y} r="5.2" fill="rgba(255,255,255,0.12)" />
+                <circle cx={node.x} cy={node.y} r="2.4" fill="white" />
+              </g>
+            ))}
+            <circle cx="50" cy="50" r="11" fill="rgba(255,255,255,0.12)" />
+            <circle cx="50" cy="50" r="5" fill="white" />
+          </svg>
+
+          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/12 bg-black/45 px-4 py-2 text-center backdrop-blur-xl">
+            <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-white/42">core hub</div>
+            <div className="mt-1 text-sm font-medium text-white">Export Engine</div>
+          </div>
+
+          <div className="absolute inset-x-4 bottom-4 grid gap-2 sm:grid-cols-2">
+            {nodes.map((node) => (
+              <div key={node.label} className="rounded-[18px] border border-white/10 bg-black/28 px-3 py-2 text-sm text-white/70 backdrop-blur-lg">
+                {node.label}
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </VisualShell>
+  );
+}
+
+function EventSignalVisual() {
+  const events = [
+    { city: 'Toronto', name: 'Elevate', tone: 'рост сети инвесторов' },
+    { city: 'Montréal', name: 'Startupfest', tone: 'глобальная витрина' },
+    { city: 'Ottawa', name: 'SaaS North', tone: 'B2B SaaS фокус' },
+  ];
+
+  return (
+    <VisualShell eyebrow="event signal" title="Конференции создают плотность внимания вокруг хаба">
+      <div className="rounded-[26px] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.07),rgba(255,255,255,0.02))] p-4">
+        <div className="relative overflow-hidden rounded-[22px] border border-white/8 bg-[radial-gradient(circle_at_top,rgba(244,114,182,0.15),transparent_38%),linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.01))] px-4 py-5">
+          <div className="absolute left-8 top-8 bottom-8 w-px bg-gradient-to-b from-white/0 via-white/20 to-white/0" />
+          <div className="space-y-4">
+            {events.map((event, idx) => (
+              <motion.div
+                key={event.name}
+                className="relative ml-6 rounded-[22px] border border-white/10 bg-black/28 p-4 backdrop-blur-xl"
+                initial={{ x: 14, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ delay: idx * 0.1, duration: 0.35 }}
+              >
+                <div className="absolute -left-[29px] top-5 h-4 w-4 rounded-full border border-white/20 bg-white shadow-[0_0_18px_rgba(255,255,255,0.45)]" />
+                <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-white/42">{event.city}</div>
+                <div className="mt-2 text-lg font-semibold text-white">{event.name}</div>
+                <div className="mt-2 text-sm leading-6 text-white/62">{event.tone}</div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </VisualShell>
+  );
+}
+
+function SlideDetails({ slide, hasVisual }) {
+  return (
+    <>
+      {slide.stats && (
+        <div className={`grid gap-4 ${hasVisual ? 'md:grid-cols-2' : 'md:grid-cols-3'}`}>
+          {slide.stats.map((item) => (
+            <StatPill key={item.value + item.text} value={item.value} text={item.text} />
+          ))}
+        </div>
+      )}
+
+      {slide.cards && (
+        <div className={`grid gap-4 md:gap-5 ${hasVisual ? 'xl:grid-cols-1' : 'lg:grid-cols-2'}`}>
+          {slide.cards.map((card) => (
+            <InfoCard key={card.heading} {...card} />
+          ))}
+        </div>
+      )}
+
+      {slide.bullets && (
+        <div className={`grid gap-3 ${hasVisual ? 'md:grid-cols-2' : 'md:grid-cols-2 lg:grid-cols-3'}`}>
+          {slide.bullets.map((item) => (
+            <div
+              key={item}
+              className="rounded-[24px] border border-white/10 bg-white/[0.055] px-5 py-4 text-[15px] leading-7 text-white/76 backdrop-blur-xl"
+            >
+              {item}
+            </div>
+          ))}
+        </div>
+      )}
+    </>
+  );
+}
+
+function SlideVisual({ slide }) {
+  switch (slide.id) {
+    case '01':
+      return <EcosystemOverviewVisual />;
+    case '05':
+      return <VentureCapitalVisual />;
+    case '07':
+      return <ClusterNetworkVisual />;
+    case '09':
+      return <EventSignalVisual />;
+    default:
+      return null;
+  }
+}
+
 function SlideContent({ slide, index, total }) {
   const Icon = slide.icon;
+  const hasVisual = ['01', '05', '07', '09'].includes(slide.id);
+  const visual = hasVisual ? <SlideVisual slide={slide} /> : null;
 
   return (
     <motion.div
@@ -360,34 +621,17 @@ function SlideContent({ slide, index, total }) {
         </div>
 
         <div className="mt-8 flex-1 min-h-0">
-          {slide.stats && (
-            <div className="grid gap-4 md:grid-cols-3">
-              {slide.stats.map((item) => (
-                <StatPill key={item.value + item.text} value={item.value} text={item.text} />
-              ))}
+          <div className={`grid gap-5 ${hasVisual ? 'xl:grid-cols-[minmax(0,1.15fr)_minmax(340px,0.85fr)]' : ''}`}>
+            <div className="grid gap-4">
+              <SlideDetails slide={slide} hasVisual={hasVisual} />
             </div>
-          )}
 
-          {slide.cards && (
-            <div className="grid gap-4 md:gap-5 lg:grid-cols-2">
-              {slide.cards.map((card) => (
-                <InfoCard key={card.heading} {...card} />
-              ))}
-            </div>
-          )}
-
-          {slide.bullets && (
-            <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
-              {slide.bullets.map((item) => (
-                <div
-                  key={item}
-                  className="rounded-[24px] border border-white/10 bg-white/[0.055] px-5 py-4 text-[15px] leading-7 text-white/76 backdrop-blur-xl"
-                >
-                  {item}
-                </div>
-              ))}
-            </div>
-          )}
+            {hasVisual && (
+              <div className="xl:pl-2">
+                {visual}
+              </div>
+            )}
+          </div>
         </div>
 
         {slide.note && (
