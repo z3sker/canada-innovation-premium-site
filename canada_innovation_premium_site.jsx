@@ -441,7 +441,6 @@ export default function CanadaInnovationPremiumSite() {
           <div className="mb-4 flex items-center justify-between px-1 md:mb-5">
             <div>
               <div className="font-mono text-[11px] uppercase tracking-[0.25em] text-white/40">outfit / jetbrains mono</div>
-              <div className="mt-2 text-sm text-white/55 md:text-base">Премиальный веб-режим с клавиатурной навигацией</div>
             </div>
 
             <div className="hidden items-center gap-3 md:flex">
