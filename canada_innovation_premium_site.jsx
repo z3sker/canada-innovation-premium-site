@@ -335,73 +335,47 @@ function MetricTag({ label, value }) {
 }
 
 function EcosystemOverviewVisual() {
-  const points = [
-    { x: 10, y: 72, label: 'ideas' },
-    { x: 28, y: 60, label: 'labs' },
-    { x: 46, y: 52, label: 'angels' },
-    { x: 64, y: 34, label: 'vc' },
-    { x: 82, y: 20, label: 'global' },
+  const stages = [
+    { step: '01', title: 'Исследования', text: 'университеты и R&D-центры' },
+    { step: '02', title: 'Инкубация', text: 'инкубаторы и первые пилоты' },
+    { step: '03', title: 'Ранний капитал', text: 'ангелы и pre-seed чек' },
+    { step: '04', title: 'Масштабирование', text: 'VC, акселераторы, growth' },
+    { step: '05', title: 'Глобальный рынок', text: 'экспорт и международные сети' },
   ];
 
   return (
-    <VisualShell eyebrow="ecosystem pulse" title="Рост от исследований к глобальному масштабированию">
+    <VisualShell eyebrow="ecosystem flow" title="Как канадская экосистема проводит стартап от науки к рынку">
       <div className="rounded-[26px] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.07),rgba(255,255,255,0.02))] p-4">
-        <div className="relative h-56 overflow-hidden rounded-[22px] border border-white/8 bg-[radial-gradient(circle_at_top,rgba(129,140,248,0.2),transparent_45%),linear-gradient(180deg,rgba(255,255,255,0.05),rgba(255,255,255,0.01))]">
-          <div className="absolute inset-0 opacity-[0.08] [background-image:linear-gradient(to_right,white_1px,transparent_1px),linear-gradient(to_bottom,white_1px,transparent_1px)] [background-size:36px_36px]" />
-          <svg viewBox="0 0 100 100" className="absolute inset-0 h-full w-full">
-            <defs>
-              <linearGradient id="ecosystem-line" x1="0%" y1="100%" x2="100%" y2="0%">
-                <stop offset="0%" stopColor="rgba(103,232,249,0.65)" />
-                <stop offset="55%" stopColor="rgba(244,114,182,0.9)" />
-                <stop offset="100%" stopColor="rgba(255,255,255,0.95)" />
-              </linearGradient>
-            </defs>
-            <motion.path
-              d="M 10 72 C 18 67, 22 64, 28 60 S 40 54, 46 52 S 58 41, 64 34 S 76 24, 82 20"
-              fill="none"
-              stroke="url(#ecosystem-line)"
-              strokeWidth="2.4"
-              strokeLinecap="round"
-              initial={{ pathLength: 0, opacity: 0.4 }}
-              animate={{ pathLength: 1, opacity: 1 }}
-              transition={{ duration: 1.1, ease: 'easeOut' }}
-            />
-            <motion.path
-              d="M 10 72 C 18 67, 22 64, 28 60 S 40 54, 46 52 S 58 41, 64 34 S 76 24, 82 20 L 82 86 L 10 86 Z"
-              fill="url(#ecosystem-line)"
-              opacity="0.12"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 0.12 }}
-              transition={{ duration: 0.8 }}
-            />
-            {points.map((point, idx) => (
-              <g key={point.label}>
-                <motion.circle
-                  cx={point.x}
-                  cy={point.y}
-                  r="2.6"
-                  fill="white"
-                  initial={{ scale: 0.6, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  transition={{ delay: 0.18 * idx, duration: 0.35 }}
-                />
-                <circle cx={point.x} cy={point.y} r="5.5" fill="white" opacity="0.12" />
-              </g>
-            ))}
-          </svg>
-          <div className="absolute inset-x-4 bottom-4 flex justify-between gap-2">
-            {points.map((point) => (
-              <div key={point.label} className="rounded-full border border-white/10 bg-black/30 px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.18em] text-white/58">
-                {point.label}
-              </div>
-            ))}
+        <div className="grid gap-3 lg:grid-cols-5">
+          {stages.map((stage, idx) => (
+            <div key={stage.step} className="relative">
+              <motion.div
+                className="rounded-[24px] border border-white/10 bg-black/28 p-4 backdrop-blur-xl"
+                initial={{ y: 12, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: idx * 0.08, duration: 0.35 }}
+              >
+                <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-white/42">{stage.step}</div>
+                <div className="mt-3 text-lg font-semibold text-white">{stage.title}</div>
+                <div className="mt-2 text-sm leading-6 text-white/64">{stage.text}</div>
+              </motion.div>
+              {idx < stages.length - 1 && (
+                <div className="pointer-events-none absolute -right-2 top-1/2 hidden h-px w-4 -translate-y-1/2 bg-gradient-to-r from-white/0 via-white/28 to-white/0 lg:block" />
+              )}
+            </div>
+          ))}
+        </div>
+        <div className="mt-4 rounded-[22px] border border-white/10 bg-white/[0.04] px-4 py-3">
+          <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-white/40">core logic</div>
+          <div className="mt-2 text-sm leading-6 text-white/68">
+            Сила Канады не в одном фонде или институте, а в связанной цепочке: таланты, инкубаторы, капитал, кластеры и экспортные механизмы.
           </div>
         </div>
       </div>
 
       <div className="mt-4 grid gap-3 sm:grid-cols-3">
         <MetricTag label="talent base" value="университеты + R&D" />
-        <MetricTag label="capital stack" value="ангелы → VC → grants" />
+        <MetricTag label="capital stack" value="ангелы + VC + grants" />
         <MetricTag label="market reach" value="кластеры + export" />
       </div>
     </VisualShell>
@@ -410,29 +384,52 @@ function EcosystemOverviewVisual() {
 
 function VentureCapitalVisual() {
   const bars = [
-    { label: 'Seed', value: 38, color: 'from-cyan-300/90 to-sky-400/80' },
-    { label: 'A', value: 58, color: 'from-emerald-300/90 to-teal-400/80' },
-    { label: 'B', value: 72, color: 'from-lime-300/90 to-emerald-400/80' },
-    { label: 'Growth', value: 92, color: 'from-white/95 to-lime-200/90' },
+    { label: 'Seed', value: 28, color: 'from-cyan-300 to-sky-400', note: 'ранние чеки' },
+    { label: 'Series A', value: 46, color: 'from-emerald-300 to-teal-400', note: 'первые фонды роста' },
+    { label: 'Series B', value: 68, color: 'from-lime-300 to-emerald-400', note: 'масштабирование' },
+    { label: 'Growth', value: 88, color: 'from-white to-lime-200', note: 'поздняя стадия' },
   ];
+  const levels = ['100', '75', '50', '25', '0'];
 
   return (
-    <VisualShell eyebrow="capital structure" title="Капитал становится глубже по мере взросления компании">
+    <VisualShell eyebrow="capital depth" title="Глубина финансирования растёт по мере взросления стартапа">
       <div className="grid gap-4">
         <div className="rounded-[26px] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.07),rgba(255,255,255,0.02))] p-4">
-          <div className="flex h-56 items-end gap-3 rounded-[22px] border border-white/8 bg-[radial-gradient(circle_at_top,rgba(163,230,53,0.16),transparent_38%),linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.01))] px-3 pb-3 pt-10">
-            {bars.map((bar, idx) => (
-              <div key={bar.label} className="flex flex-1 flex-col items-center justify-end gap-3">
-                <motion.div
-                  className={`w-full rounded-t-[20px] bg-gradient-to-t ${bar.color} shadow-[0_18px_50px_rgba(163,230,53,0.18)]`}
-                  style={{ height: `${bar.value}%` }}
-                  initial={{ height: 0, opacity: 0.4 }}
-                  animate={{ height: `${bar.value}%`, opacity: 1 }}
-                  transition={{ delay: idx * 0.08, duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-                />
-                <div className="font-mono text-[10px] uppercase tracking-[0.18em] text-white/50">{bar.label}</div>
+          <div className="grid gap-4 rounded-[22px] border border-white/8 bg-[radial-gradient(circle_at_top,rgba(163,230,53,0.16),transparent_38%),linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.01))] p-4 lg:grid-cols-[42px_minmax(0,1fr)]">
+            <div className="hidden lg:flex lg:h-64 lg:flex-col lg:justify-between">
+              {levels.map((level) => (
+                <div key={level} className="font-mono text-[10px] uppercase tracking-[0.18em] text-white/36">
+                  {level}
+                </div>
+              ))}
+            </div>
+
+            <div className="relative h-64">
+              <div className="absolute inset-0 flex flex-col justify-between">
+                {levels.map((level) => (
+                  <div key={level} className="border-t border-white/8" />
+                ))}
               </div>
-            ))}
+
+              <div className="absolute inset-0 flex items-end justify-between gap-4 px-1 pt-6">
+                {bars.map((bar, idx) => (
+                  <div key={bar.label} className="flex h-full flex-1 flex-col justify-end">
+                    <div className="mb-3 text-center">
+                      <div className="text-sm font-semibold text-white">{bar.value}</div>
+                      <div className="text-[11px] text-white/46">{bar.note}</div>
+                    </div>
+                    <motion.div
+                      className={`w-full rounded-t-[22px] bg-gradient-to-t ${bar.color} shadow-[0_20px_60px_rgba(163,230,53,0.18)]`}
+                      style={{ height: `${bar.value}%` }}
+                      initial={{ height: 0, opacity: 0.45 }}
+                      animate={{ height: `${bar.value}%`, opacity: 1 }}
+                      transition={{ delay: idx * 0.08, duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+                    />
+                    <div className="mt-3 text-center font-mono text-[10px] uppercase tracking-[0.18em] text-white/50">{bar.label}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
 
@@ -447,42 +444,54 @@ function VentureCapitalVisual() {
 }
 
 function ClusterNetworkVisual() {
-  const nodes = [
-    { x: 50, y: 20, label: 'Montréal' },
-    { x: 24, y: 42, label: 'Vancouver' },
-    { x: 76, y: 42, label: 'Ontario' },
-    { x: 33, y: 73, label: 'Prairies' },
-    { x: 67, y: 73, label: 'Atlantic' },
+  const clusters = [
+    { region: 'Montréal', sector: 'Scale AI', accent: 'bg-cyan-300' },
+    { region: 'Vancouver', sector: 'Digital Technology', accent: 'bg-sky-300' },
+    { region: 'Ontario', sector: 'Advanced Manufacturing', accent: 'bg-violet-300' },
+    { region: 'Prairies', sector: 'Protein Industries', accent: 'bg-emerald-300' },
+    { region: 'Atlantic', sector: 'Ocean Cluster', accent: 'bg-pink-300' },
   ];
 
   return (
-    <VisualShell eyebrow="cluster map" title="Кластеры работают как единая экспортная сеть">
+    <VisualShell eyebrow="cluster matrix" title="Пять кластеров питают единый экспортный контур">
       <div className="rounded-[26px] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.07),rgba(255,255,255,0.02))] p-4">
-        <div className="relative h-64 overflow-hidden rounded-[22px] border border-white/8 bg-[radial-gradient(circle_at_center,rgba(99,102,241,0.16),transparent_40%),linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.01))]">
-          <div className="absolute inset-0 opacity-[0.08] [background-image:linear-gradient(to_right,white_1px,transparent_1px),linear-gradient(to_bottom,white_1px,transparent_1px)] [background-size:40px_40px]" />
-          <svg viewBox="0 0 100 100" className="absolute inset-0 h-full w-full">
-            {nodes.map((node) => (
-              <g key={node.label}>
-                <line x1="50" y1="50" x2={node.x} y2={node.y} stroke="rgba(255,255,255,0.18)" strokeWidth="1.2" strokeDasharray="3 3" />
-                <circle cx={node.x} cy={node.y} r="5.2" fill="rgba(255,255,255,0.12)" />
-                <circle cx={node.x} cy={node.y} r="2.4" fill="white" />
-              </g>
+        <div className="grid gap-4 rounded-[22px] border border-white/8 bg-[radial-gradient(circle_at_center,rgba(99,102,241,0.16),transparent_40%),linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.01))] p-4">
+          <div className="grid gap-3">
+            {clusters.map((cluster, idx) => (
+              <motion.div
+                key={cluster.region}
+                className="grid items-center gap-3 rounded-[20px] border border-white/10 bg-black/26 px-4 py-3 backdrop-blur-xl sm:grid-cols-[minmax(0,1fr)_24px_180px]"
+                initial={{ x: 12, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ delay: idx * 0.06, duration: 0.3 }}
+              >
+                <div className="flex items-center gap-3">
+                  <span className={`h-2.5 w-2.5 rounded-full ${cluster.accent}`} />
+                  <div>
+                    <div className="text-base font-semibold text-white">{cluster.region}</div>
+                    <div className="text-sm text-white/58">{cluster.sector}</div>
+                  </div>
+                </div>
+                <div className="hidden text-center text-white/34 sm:block">→</div>
+                <div className="rounded-[16px] border border-white/10 bg-white/[0.045] px-3 py-2 text-sm text-white/66">
+                  Готовность к экспорту
+                </div>
+              </motion.div>
             ))}
-            <circle cx="50" cy="50" r="11" fill="rgba(255,255,255,0.12)" />
-            <circle cx="50" cy="50" r="5" fill="white" />
-          </svg>
-
-          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/12 bg-black/45 px-4 py-2 text-center backdrop-blur-xl">
-            <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-white/42">core hub</div>
-            <div className="mt-1 text-sm font-medium text-white">Export Engine</div>
           </div>
 
-          <div className="absolute inset-x-4 bottom-4 grid gap-2 sm:grid-cols-2">
-            {nodes.map((node) => (
-              <div key={node.label} className="rounded-[18px] border border-white/10 bg-black/28 px-3 py-2 text-sm text-white/70 backdrop-blur-lg">
-                {node.label}
+          <div className="rounded-[22px] border border-white/10 bg-white/[0.045] p-4">
+            <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-white/40">export layer</div>
+            <div className="mt-3 grid gap-3 sm:grid-cols-2">
+              <div className="rounded-[18px] border border-white/10 bg-black/24 px-4 py-3">
+                <div className="text-sm font-semibold text-white">CanExport</div>
+                <div className="mt-1 text-sm leading-6 text-white/58">покрывает часть затрат на выход на новые рынки</div>
               </div>
-            ))}
+              <div className="rounded-[18px] border border-white/10 bg-black/24 px-4 py-3">
+                <div className="text-sm font-semibold text-white">Trade Commissioner Service</div>
+                <div className="mt-1 text-sm leading-6 text-white/58">открывает доступ к сетям в США, Европе и Азии</div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
