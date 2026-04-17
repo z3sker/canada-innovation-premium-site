@@ -101,6 +101,7 @@ const slides = [
       { value: 'BDC Capital', text: 'крупнейший государственный игрок' },
       { value: 'Inovia Capital', text: 'фонд роста глобальных чемпионов' },
     ],
+    notePlacement: 'top',
     note: 'Госкапитал и частные фонды вместе формируют плотную систему финансирования от seed до поздних стадий.',
   },
   {
@@ -595,6 +596,11 @@ function SlideContent({ slide, index, total }) {
   const Icon = slide.icon;
   const hasVisual = ['01', '05', '07', '09'].includes(slide.id);
   const visual = hasVisual ? <SlideVisual slide={slide} /> : null;
+  const noteBlock = slide.note ? (
+    <div className="rounded-[26px] border border-white/12 bg-black/20 px-5 py-4 text-sm leading-7 text-white/66 backdrop-blur-xl md:text-[15px]">
+      {slide.note}
+    </div>
+  ) : null;
 
   return (
     <motion.div
@@ -637,6 +643,12 @@ function SlideContent({ slide, index, total }) {
           {slide.subtitle}
         </div>
 
+        {slide.notePlacement === 'top' && noteBlock && (
+          <div className="mt-6">
+            {noteBlock}
+          </div>
+        )}
+
         <div className="mt-8 flex-1 min-h-0">
           <div className={`grid gap-5 ${hasVisual ? 'xl:grid-cols-[minmax(0,1.15fr)_minmax(340px,0.85fr)] xl:items-start' : ''}`}>
             <div className="grid self-start gap-4">
@@ -651,9 +663,9 @@ function SlideContent({ slide, index, total }) {
           </div>
         </div>
 
-        {slide.note && (
-          <div className="mt-6 rounded-[26px] border border-white/12 bg-black/20 px-5 py-4 text-sm leading-7 text-white/66 backdrop-blur-xl md:text-[15px]">
-            {slide.note}
+        {slide.notePlacement !== 'top' && noteBlock && (
+          <div className="mt-6">
+            {noteBlock}
           </div>
         )}
       </div>
