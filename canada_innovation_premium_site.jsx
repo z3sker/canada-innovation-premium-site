@@ -384,64 +384,59 @@ function EcosystemOverviewVisual() {
 
 function VentureCapitalVisual() {
   const bars = [
-    { label: 'Seed', value: 28, color: '#30c7ff', note: 'ранние чеки', x: 18 },
-    { label: 'Series A', value: 46, color: '#2ed8bf', note: 'первые фонды роста', x: 39 },
-    { label: 'Series B', value: 68, color: '#9ef74b', note: 'масштабирование', x: 60 },
-    { label: 'Growth', value: 88, color: '#f1ffbb', note: 'поздняя стадия', x: 81 },
+    { label: 'Seed', value: 28, color: 'from-sky-400 to-cyan-300', note: 'ранние чеки' },
+    { label: 'Series A', value: 46, color: 'from-teal-400 to-cyan-300', note: 'первые фонды роста' },
+    { label: 'Series B', value: 68, color: 'from-lime-400 to-emerald-300', note: 'масштабирование' },
+    { label: 'Growth', value: 88, color: 'from-lime-200 to-white', note: 'поздняя стадия' },
   ];
-  const levels = ['100', '75', '50', '25', '0'];
+  const levels = ['0', '25', '50', '75', '100'];
 
   return (
     <VisualShell eyebrow="capital depth" title="Глубина финансирования растёт по мере взросления стартапа">
       <div className="grid gap-4">
         <div className="rounded-[26px] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.07),rgba(255,255,255,0.02))] p-4">
           <div className="rounded-[22px] border border-white/8 bg-[radial-gradient(circle_at_top,rgba(163,230,53,0.16),transparent_38%),linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.01))] p-4">
-            <svg viewBox="0 0 100 100" className="h-72 w-full overflow-visible">
-              {levels.map((level, idx) => {
-                const y = 10 + idx * 20;
-                return (
-                  <g key={level}>
-                    <text x="2" y={y + 1.5} fill="rgba(255,255,255,0.36)" fontSize="3.2" fontFamily="JetBrains Mono, monospace">
-                      {level}
-                    </text>
-                    <line x1="14" y1={y} x2="98" y2={y} stroke="rgba(255,255,255,0.09)" strokeWidth="0.4" />
-                  </g>
-                );
-              })}
+            <div className="grid gap-3">
+              <div className="grid grid-cols-5 gap-2 px-1 font-mono text-[10px] uppercase tracking-[0.18em] text-white/34">
+                {levels.map((level) => (
+                  <div key={level} className="text-center">
+                    {level}
+                  </div>
+                ))}
+              </div>
 
-              {bars.map((bar, idx) => {
-                const height = bar.value * 0.8;
-                const y = 90 - height;
-                return (
-                  <g key={bar.label}>
-                    <motion.rect
-                      x={bar.x}
-                      y={y}
-                      width="14"
-                      height={height}
-                      rx="4"
-                      fill={bar.color}
-                      initial={{ height: 0, y: 90, opacity: 0.45 }}
-                      animate={{ height, y, opacity: 1 }}
-                      transition={{ delay: idx * 0.08, duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-                    />
-                    <text x={bar.x + 7} y={y - 4} textAnchor="middle" fill="white" fontSize="4.5" fontWeight="700">
-                      {bar.value}
-                    </text>
-                    <text x={bar.x + 7} y="97" textAnchor="middle" fill="rgba(255,255,255,0.5)" fontSize="2.6" fontFamily="JetBrains Mono, monospace">
-                      {bar.label.toUpperCase()}
-                    </text>
-                  </g>
-                );
-              })}
-            </svg>
+              <div className="grid gap-3">
+                {bars.map((bar, idx) => (
+                  <motion.div
+                    key={bar.label}
+                    className="rounded-[20px] border border-white/10 bg-black/22 p-3 backdrop-blur-xl"
+                    initial={{ x: 10, opacity: 0 }}
+                    animate={{ x: 0, opacity: 1 }}
+                    transition={{ delay: idx * 0.08, duration: 0.32 }}
+                  >
+                    <div className="flex items-start justify-between gap-4">
+                      <div>
+                        <div className="text-sm font-semibold text-white">{bar.label}</div>
+                        <div className="mt-1 text-xs leading-5 text-white/56">{bar.note}</div>
+                      </div>
+                      <div className="font-mono text-base font-semibold text-white">{bar.value}</div>
+                    </div>
 
-            <div className="mt-2 grid gap-2 sm:grid-cols-2">
-              {bars.map((bar) => (
-                <div key={bar.label} className="rounded-[16px] border border-white/10 bg-black/24 px-3 py-2 text-sm text-white/62">
-                  <span className="font-semibold text-white">{bar.label}:</span> {bar.note}
-                </div>
-              ))}
+                    <div className="mt-3 h-3.5 overflow-hidden rounded-full bg-white/6">
+                      <motion.div
+                        className={`h-full rounded-full bg-gradient-to-r ${bar.color} shadow-[0_10px_28px_rgba(255,255,255,0.08)]`}
+                        initial={{ width: 0, opacity: 0.5 }}
+                        animate={{ width: `${bar.value}%`, opacity: 1 }}
+                        transition={{ delay: idx * 0.08, duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+                      />
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+
+              <div className="rounded-[18px] border border-white/10 bg-white/[0.04] px-4 py-3 text-sm leading-6 text-white/62">
+                Шкала показывает относительную глубину доступного капитала по стадиям: чем дальше стадия, тем шире доступ к крупным чекам и фондам роста.
+              </div>
             </div>
           </div>
         </div>
@@ -550,7 +545,7 @@ function SlideDetails({ slide, hasVisual }) {
   return (
     <>
       {slide.stats && (
-        <div className={`grid gap-4 ${hasVisual ? 'md:grid-cols-2' : 'md:grid-cols-3'}`}>
+        <div className={`grid items-start content-start gap-4 ${hasVisual ? 'md:grid-cols-2' : 'md:grid-cols-3'}`}>
           {slide.stats.map((item) => (
             <StatPill key={item.value + item.text} value={item.value} text={item.text} />
           ))}
@@ -643,8 +638,8 @@ function SlideContent({ slide, index, total }) {
         </div>
 
         <div className="mt-8 flex-1 min-h-0">
-          <div className={`grid gap-5 ${hasVisual ? 'xl:grid-cols-[minmax(0,1.15fr)_minmax(340px,0.85fr)]' : ''}`}>
-            <div className="grid gap-4">
+          <div className={`grid gap-5 ${hasVisual ? 'xl:grid-cols-[minmax(0,1.15fr)_minmax(340px,0.85fr)] xl:items-start' : ''}`}>
+            <div className="grid self-start gap-4">
               <SlideDetails slide={slide} hasVisual={hasVisual} />
             </div>
 
